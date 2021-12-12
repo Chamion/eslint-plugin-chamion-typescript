@@ -1,0 +1,24 @@
+{
+  "name": "eslint-plugin-chamion-typescript",
+  "description": "Chamion-authored eslint rules that require the typescript-eslint parser",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "typescript"
+  ],
+  "license": "BSD-2-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Chamion/eslint-plugin-chamion-typescript"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@typescript-eslint/experimental-utils": "^5.5.0",
+    "tsutils": "^3.21.0"
+  },
+  "peerDependencies": {
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0"
+  }
+}
