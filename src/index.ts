@@ -1,6 +1,6 @@
 import preferPromiseRejection from "./rules/prefer-promise-rejection";
 
-export default {
+module.exports = {
   rules: {
       'prefer-promise-rejection': preferPromiseRejection
   },

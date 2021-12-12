@@ -7,7 +7,7 @@ import { isThenableType, unionTypeParts } from "tsutils";
 import { Type } from "typescript";
 
 const { getParserServices } = ESLintUtils;
-export const createRule = ESLintUtils.RuleCreator(
+const createRule = ESLintUtils.RuleCreator(
   (name) =>
     `https://github.com/Chamion/eslint-plugin-chamion-typescript/blob/master/docs/rules/${name}.md`
 );

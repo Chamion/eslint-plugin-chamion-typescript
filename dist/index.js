@@ -1,10 +1,7 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const prefer_promise_rejection_1 = __importDefault(require("./rules/prefer-promise-rejection"));
-exports.default = {
+const prefer_promise_rejection_1 = require("./rules/prefer-promise-rejection");
+module.exports = {
     rules: {
         'prefer-promise-rejection': prefer_promise_rejection_1.default
     },

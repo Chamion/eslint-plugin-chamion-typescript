@@ -18,6 +18,9 @@
     "@typescript-eslint/experimental-utils": "^5.5.0",
     "tsutils": "^3.21.0"
   },
+  "devDependencies": {
+    "@types/node": "^16.11.12"
+  },
   "peerDependencies": {
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0"

@@ -1,10 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createRule = void 0;
 const experimental_utils_1 = require("@typescript-eslint/experimental-utils");
 const tsutils_1 = require("tsutils");
 const { getParserServices } = experimental_utils_1.ESLintUtils;
-exports.createRule = experimental_utils_1.ESLintUtils.RuleCreator((name) => `https://github.com/Chamion/eslint-plugin-chamion-typescript/blob/master/docs/rules/${name}.md`);
+const createRule = experimental_utils_1.ESLintUtils.RuleCreator((name) => `https://github.com/Chamion/eslint-plugin-chamion-typescript/blob/master/docs/rules/${name}.md`);
 // Copy-pasted from no-unsafe-return
 const getParentFunctionNode = (node) => {
     let current = node.parent;
@@ -20,7 +19,7 @@ const getParentFunctionNode = (node) => {
     // the parser won't error, so we shouldn't throw here
     /* istanbul ignore next */ return null;
 };
-exports.default = (0, exports.createRule)({
+exports.default = createRule({
     name: "prefer-promise-rejection",
     meta: {
         type: "problem",
