@@ -1,4 +1,4 @@
-import preferPromiseRejection from "./src/prefer-promise-rejection";
+import preferPromiseRejection from "./rules/prefer-promise-rejection";
 
 export default {
   rules: {
