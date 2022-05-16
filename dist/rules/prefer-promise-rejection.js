@@ -51,7 +51,7 @@ exports.default = createRule({
                 }
                 const parentType = checker.getApparentType(checker.getTypeAtLocation(parserServices.esTreeNodeToTSNodeMap.get(parent)));
                 const returnTypes = getReturnTypeUnionSubTypes(parentType);
-                const returnsPromise = returnTypes.every((returnType) => (0, tsutils_1.isThenableType)(checker, parserServices.esTreeNodeToTSNodeMap.get(parent), returnType));
+                const returnsPromise = returnTypes.every((returnType) => { var _a; return ((_a = returnType.getSymbol()) === null || _a === void 0 ? void 0 : _a.name) === "Promise"; });
                 if (returnsPromise) {
                     context.report({
                         node,
