@@ -3,7 +3,7 @@ import {
   TSESTree,
   ESLintUtils,
 } from "@typescript-eslint/experimental-utils";
-import { isThenableType, unionTypeParts } from "tsutils";
+import { unionTypeParts } from "tsutils";
 import { Type } from "typescript";
 
 const { getParserServices } = ESLintUtils;
@@ -79,12 +79,8 @@ export default createRule({
           )
         );
         const returnTypes = getReturnTypeUnionSubTypes(parentType);
-        const returnsPromise = returnTypes.every((returnType) =>
-          isThenableType(
-            checker,
-            parserServices.esTreeNodeToTSNodeMap.get(parent),
-            returnType
-          )
+        const returnsPromise = returnTypes.every(
+          (returnType) => returnType.getSymbol()?.name === "Promise"
         );
         if (returnsPromise) {
           context.report({
