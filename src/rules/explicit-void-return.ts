@@ -38,7 +38,7 @@ const getParentFunctionNode = (
   /* istanbul ignore next */ return null;
 };
 
-const voidTypeNames = ["undefined", "void"];
+const voidTypeNames = ["undefined", "void", "never"];
 const isVoidType = (type: Type): boolean => {
   const { intrinsicName } =  type as { intrinsicName?: string };
   return intrinsicName != null && voidTypeNames.includes(intrinsicName);

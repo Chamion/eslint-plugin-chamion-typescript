@@ -16,7 +16,7 @@ const isFunctionType = (type: Type): boolean =>
     (typePart) => typePart.getCallSignatures().length > 0
   );
 
-const voidTypeNames = ["undefined", "void"];
+const voidTypeNames = ["undefined", "void", "never"];
 const isVoidType = (type: Type): boolean => {
   const { intrinsicName } =  type as { intrinsicName?: string };
   return intrinsicName != null && voidTypeNames.includes(intrinsicName);
