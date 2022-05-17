@@ -18,9 +18,14 @@ const isFunctionType = (type: Type): boolean =>
 
 const voidTypeNames = ["undefined", "void", "never"];
 const isVoidType = (type: Type): boolean => {
-  const { intrinsicName } =  type as { intrinsicName?: string };
+  const { intrinsicName } = type as { intrinsicName?: string };
   return intrinsicName != null && voidTypeNames.includes(intrinsicName);
 };
+const isShortest = (
+  element: unknown[],
+  _index: number,
+  array: unknown[][]
+): boolean => element.length === Math.min(...array.map(({ length }) => length));
 
 export default createRule({
   name: "no-return-into-void",
@@ -74,7 +79,8 @@ export default createRule({
         const parametersOfCallSignatures = unionTypeParts(type)
           .flatMap((subType) => subType.getCallSignatures())
           .map((signature) => signature.getParameters())
-          .filter((parameters) => parameters.length === length);
+          .filter((parameters) => parameters.length >= length)
+          .filter(isShortest);
         if (parametersOfCallSignatures.length === 0) {
           return [];
         }
