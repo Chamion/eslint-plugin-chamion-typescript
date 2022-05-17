@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.2.1",
   "name": "eslint-plugin-chamion-typescript",
   "description": "Chamion-authored eslint rules that require the typescript-eslint parser",
   "keywords": [

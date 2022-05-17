@@ -6,7 +6,7 @@ const tsutils_1 = require("tsutils");
 const { getParserServices } = experimental_utils_1.ESLintUtils;
 exports.createRule = experimental_utils_1.ESLintUtils.RuleCreator((name) => `https://github.com/Chamion/eslint-plugin-chamion-typescript/blob/master/docs/rules/${name}.md`);
 const isFunctionType = (type) => (0, tsutils_1.unionTypeParts)(type).every((typePart) => typePart.getCallSignatures().length > 0);
-const voidTypeNames = ["undefined", "void"];
+const voidTypeNames = ["undefined", "void", "never"];
 const isVoidType = (type) => {
     const { intrinsicName } = type;
     return intrinsicName != null && voidTypeNames.includes(intrinsicName);

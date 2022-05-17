@@ -20,7 +20,7 @@ const getParentFunctionNode = (node) => {
     // the parser won't error, so we shouldn't throw here
     /* istanbul ignore next */ return null;
 };
-const voidTypeNames = ["undefined", "void"];
+const voidTypeNames = ["undefined", "void", "never"];
 const isVoidType = (type) => {
     const { intrinsicName } = type;
     return intrinsicName != null && voidTypeNames.includes(intrinsicName);
