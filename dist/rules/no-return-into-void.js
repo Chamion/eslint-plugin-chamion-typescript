@@ -11,6 +11,7 @@ const isVoidType = (type) => {
     const { intrinsicName } = type;
     return intrinsicName != null && voidTypeNames.includes(intrinsicName);
 };
+const isShortest = (element, _index, array) => element.length === Math.min(...array.map(({ length }) => length));
 exports.default = (0, exports.createRule)({
     name: "no-return-into-void",
     meta: {
@@ -58,7 +59,8 @@ exports.default = (0, exports.createRule)({
             const parametersOfCallSignatures = (0, tsutils_1.unionTypeParts)(type)
                 .flatMap((subType) => subType.getCallSignatures())
                 .map((signature) => signature.getParameters())
-                .filter((parameters) => parameters.length === length);
+                .filter((parameters) => parameters.length >= length)
+                .filter(isShortest);
             if (parametersOfCallSignatures.length === 0) {
                 return [];
             }
