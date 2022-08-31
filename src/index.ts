@@ -2,17 +2,11 @@ import preferPromiseRejection from "./rules/prefer-promise-rejection";
 import explicitVoidReturn from "./rules/explicit-void-return";
 import noReturnIntoVoid from "./rules/no-return-into-void";
 import noUniqueObjectComparison from "./rules/no-unique-object-comparison";
-// @ts-expect-error
 import compoundAssignment from "./rules/compound-assignment";
-// @ts-expect-error
 import incrementAssignment from "./rules/increment-assignment";
-// @ts-expect-error
 import noAssignmentExpression from "./rules/no-assignment-expression";
-// @ts-expect-error
 import preferNumberIsnan from "./rules/prefer-number-isnan";
-// @ts-expect-error
 import voidArrowBody from "./rules/void-arrow-body";
-// @ts-expect-error
 import voidSideEffect from "./rules/void-side-effect";
 
 module.exports = {
