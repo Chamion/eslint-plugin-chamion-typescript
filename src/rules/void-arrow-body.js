@@ -115,7 +115,11 @@ export default {
       description:
         "Prefer void operator or function body in void arrow function return values.",
       suggestion: true,
+      recommended: false,
+      extendsBaseRule: false,
+      requiresTypeChecking: false,
     },
+    hasSuggestions: true,
     fixable: "code",
     schema: [
       {
@@ -132,5 +136,6 @@ export default {
       },
     ],
   },
+  defaultOptions: [],
   create: createArrowBody
 };

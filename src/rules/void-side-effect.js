@@ -80,7 +80,11 @@ export default {
     docs: {
       description: "Disallow void operator on non-side-effect arguments",
       suggestion: true,
+      recommended: "error",
+      extendsBaseRule: false,
+      requiresTypeChecking: false,
     },
+    hasSuggestions: true,
     fixable: "code",
     schema: [
       {
@@ -100,5 +104,6 @@ export default {
       },
     ],
   },
+  defaultOptions: [],
   create: createSideEffect,
 };

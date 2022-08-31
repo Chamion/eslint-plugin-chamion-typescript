@@ -36,9 +36,14 @@ export default {
     type: "suggestion",
     docs: {
       description: "Disallows checking for NaN by self comparison",
-      suggestion: true,
+      recommended: "error",
+      extendsBaseRule: false,
+      requiresTypeChecking: false,
     },
     fixable: "code",
+    hasSuggestions: false,
+    schema: [],
   },
+  defaultOptions: [],
   create: createPreferNumberIsnan,
 };
