@@ -50,6 +50,8 @@ const createSideEffect = (context) => {
         return node.expressions.some(hasSideEffect);
       case "TaggedTemplateExpression":
         return hasSideEffect(node.quasi);
+      case "ChainExpression":
+        return hasSideEffect(node.expression);
       default:
         return false;
     }
