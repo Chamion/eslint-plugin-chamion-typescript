@@ -8,6 +8,7 @@ import noAssignmentExpression from "./rules/no-assignment-expression";
 import preferNumberIsnan from "./rules/prefer-number-isnan";
 import voidArrowBody from "./rules/void-arrow-body";
 import voidSideEffect from "./rules/void-side-effect";
+import preferFlatmap from "./rules/prefer-flatmap";
 
 module.exports = {
   rules: {
@@ -20,7 +21,8 @@ module.exports = {
     "no-assignment-expression": noAssignmentExpression,
     "prefer-number-isnan": preferNumberIsnan,
     "void-arrow-body": voidArrowBody,
-    "void-side-effect": voidSideEffect
+    "void-side-effect": voidSideEffect,
+    "prefer-flatmap": preferFlatmap,
   },
   configs: {
     recommended: {
@@ -30,7 +32,8 @@ module.exports = {
         "chamion-typescript/no-return-into-void": "error",
         "chamion-typescript/no-unique-object-comparison": "error",
         "chamion-typescript/prefer-number-isnan": "error",
-        "chamion-typescript/void-side-effect": "error"
+        "chamion-typescript/void-side-effect": "error",
+        "chamion-typescript/prefer-flatmap": "error",
       },
     },
   },
