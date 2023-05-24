@@ -136,6 +136,7 @@ const create = (context) => {
           "This expression can be better expressed with Array.prototype.flatMap",
         fix: (fixer) => {
           return [
+            fixer.removeRange([acc.start, curr.start]),
             fixer.replaceText(node.callee.property, "flatMap"),
             ...returnValues.flatMap(
               fixReturnValue(acc.name, fixer, context.getSourceCode())
