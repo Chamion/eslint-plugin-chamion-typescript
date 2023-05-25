@@ -109,14 +109,17 @@ const create = (context) => {
             context.report({
                 node,
                 message: "This expression can be better expressed with Array.prototype.flatMap",
-                fix: (fixer) => {
-                    return [
-                        fixer.removeRange([acc.range[0], curr.range[0]]),
-                        fixer.replaceText(node.callee.property, "flatMap"),
-                        ...returnValues.flatMap(fixReturnValue(acc.name, fixer, context.getSourceCode())),
-                        fixer.remove(initialValue),
-                    ];
-                },
+                suggest: [
+                    {
+                        desc: "Use flatMap instead of reduce",
+                        fix: (fixer) => [
+                            fixer.removeRange([acc.range[0], curr.range[0]]),
+                            fixer.replaceText(node.callee.property, "flatMap"),
+                            ...returnValues.flatMap(fixReturnValue(acc.name, fixer, context.getSourceCode())),
+                            fixer.remove(initialValue),
+                        ],
+                    },
+                ],
             });
         },
     };
@@ -129,8 +132,7 @@ const meta = {
         extendsBaseRule: false,
         requiresTypeChecking: false,
     },
-    fixable: "code",
-    hasSuggestions: false,
+    hasSuggestions: true,
     schema: [],
 };
 exports.default = {

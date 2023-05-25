@@ -134,16 +134,19 @@ const create = (context) => {
         node,
         message:
           "This expression can be better expressed with Array.prototype.flatMap",
-        fix: (fixer) => {
-          return [
-            fixer.removeRange([acc.range[0], curr.range[0]]),
-            fixer.replaceText(node.callee.property, "flatMap"),
-            ...returnValues.flatMap(
-              fixReturnValue(acc.name, fixer, context.getSourceCode())
-            ),
-            fixer.remove(initialValue),
-          ];
-        },
+        suggest: [
+          {
+            desc: "Use flatMap instead of reduce",
+            fix: (fixer) => [
+              fixer.removeRange([acc.range[0], curr.range[0]]),
+              fixer.replaceText(node.callee.property, "flatMap"),
+              ...returnValues.flatMap(
+                fixReturnValue(acc.name, fixer, context.getSourceCode())
+              ),
+              fixer.remove(initialValue),
+            ],
+          },
+        ],
       });
     },
   };
@@ -152,13 +155,13 @@ const create = (context) => {
 const meta = {
   type: "suggestion",
   docs: {
-    description: "Prefer Array.prototype.flatMap over Array.prototype.reduce where applicable",
+    description:
+      "Prefer Array.prototype.flatMap over Array.prototype.reduce where applicable",
     recommended: "error",
     extendsBaseRule: false,
     requiresTypeChecking: false,
   },
-  fixable: "code",
-  hasSuggestions: false,
+  hasSuggestions: true,
   schema: [],
 };
 
