@@ -1,7 +1,9 @@
 const isEmptyArray = (expression) =>
   expression.type === "ArrayExpression" && expression.elements.length === 0;
 
-const isLambda = (expression) => expression.type === "ArrowFunctionExpression"; // TODO: handle function expressions;
+const isLambda = (expression) =>
+  expression.type === "ArrowFunctionExpression" ||
+  expression.type === "FunctionExpression";
 
 const isReduceCall = (callExpression) => {
   // TODO: find Array.prototype.reduce usage as well.
@@ -35,7 +37,8 @@ const getReturnStatements = (statement) => {
       return [statement.consequent, statement.alternate]
         .filter((s) => s != null)
         .flatMap(getReturnStatements);
-    // TODO: more cases
+    case "LabeledStatement":
+      return getReturnStatements(statement.body);
     default:
       return [];
   }
@@ -58,7 +61,10 @@ const getReturnValues = (returnStatement) => {
   switch (returnStatement.argument.type) {
     case "ConditionalExpression":
       return getConditionalExpressionBranches(returnStatement.argument);
-    // TODO: more cases
+    case "SequenceExpression":
+      return returnStatement.argument.expressions[
+        returnStatement.argument.expressions.length - 1
+      ];
     default:
       return [returnStatement.argument];
   }
@@ -130,6 +136,14 @@ const create = (context) => {
         !returnValues.some(isDerivativeArray(acc.name))
       )
         return;
+      const fix = (fixer) => [
+        fixer.removeRange([acc.range[0], curr.range[0]]),
+        fixer.replaceText(node.callee.property, "flatMap"),
+        ...returnValues.flatMap(
+          fixReturnValue(acc.name, fixer, context.getSourceCode())
+        ),
+        fixer.remove(initialValue),
+      ];
       context.report({
         node,
         message:
@@ -137,14 +151,7 @@ const create = (context) => {
         suggest: [
           {
             desc: "Use flatMap instead of reduce",
-            fix: (fixer) => [
-              fixer.removeRange([acc.range[0], curr.range[0]]),
-              fixer.replaceText(node.callee.property, "flatMap"),
-              ...returnValues.flatMap(
-                fixReturnValue(acc.name, fixer, context.getSourceCode())
-              ),
-              fixer.remove(initialValue),
-            ],
+            fix,
           },
         ],
       });
