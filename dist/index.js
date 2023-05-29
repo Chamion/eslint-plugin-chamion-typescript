@@ -10,6 +10,7 @@ const no_assignment_expression_1 = require("./rules/no-assignment-expression");
 const prefer_number_isnan_1 = require("./rules/prefer-number-isnan");
 const void_arrow_body_1 = require("./rules/void-arrow-body");
 const void_side_effect_1 = require("./rules/void-side-effect");
+const prefer_flatmap_1 = require("./rules/prefer-flatmap");
 module.exports = {
     rules: {
         "prefer-promise-rejection": prefer_promise_rejection_1.default,
@@ -21,7 +22,8 @@ module.exports = {
         "no-assignment-expression": no_assignment_expression_1.default,
         "prefer-number-isnan": prefer_number_isnan_1.default,
         "void-arrow-body": void_arrow_body_1.default,
-        "void-side-effect": void_side_effect_1.default
+        "void-side-effect": void_side_effect_1.default,
+        "prefer-flatmap": prefer_flatmap_1.default,
     },
     configs: {
         recommended: {
@@ -31,7 +33,8 @@ module.exports = {
                 "chamion-typescript/no-return-into-void": "error",
                 "chamion-typescript/no-unique-object-comparison": "error",
                 "chamion-typescript/prefer-number-isnan": "error",
-                "chamion-typescript/void-side-effect": "error"
+                "chamion-typescript/void-side-effect": "error",
+                "chamion-typescript/prefer-flatmap": "error",
             },
         },
     },
