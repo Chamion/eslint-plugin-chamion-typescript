@@ -9,6 +9,7 @@ import preferNumberIsnan from "./rules/prefer-number-isnan";
 import voidArrowBody from "./rules/void-arrow-body";
 import voidSideEffect from "./rules/void-side-effect";
 import preferFlatmap from "./rules/prefer-flatmap";
+import reactNoStaleState from "./rules/react-no-stale-state";
 
 module.exports = {
   rules: {
@@ -23,6 +24,7 @@ module.exports = {
     "void-arrow-body": voidArrowBody,
     "void-side-effect": voidSideEffect,
     "prefer-flatmap": preferFlatmap,
+    "react-no-stale-state": reactNoStaleState,
   },
   configs: {
     recommended: {
