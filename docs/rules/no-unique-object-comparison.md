@@ -31,4 +31,4 @@ list.some(element => Array.isArray(element) && element.length === 0);
 
 ## When Not To Use It
 
-If you cannot trust your types are correct to the point you'd get false positives disable this rule.
+If you cannot trust your type annotations to the point you'd get false positives disable this rule.
