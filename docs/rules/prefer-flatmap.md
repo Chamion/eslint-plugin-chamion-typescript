@@ -25,6 +25,11 @@ const evenSizes = list => list.flatMap(
 );
 ```
 
+## Automatic Fixes
+
+The rule suggests transforming violations into an `Array.prototype.flatMap` usage.
+In most cases this transformation results in functionally equivalent code but type annotations will need to be adjusted by hand which is why the transformation is only a suggestion isntead of an automatically applied fix.
+
 ## When Not To Use It
 
 If you don't agree the `Array.prototype.flatMap` usage is more readable or cannot use it in your execution environment disable this rule.
