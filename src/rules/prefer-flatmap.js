@@ -142,7 +142,8 @@ const create = (context) => {
         ...returnValues.flatMap(
           fixReturnValue(acc.name, fixer, context.getSourceCode())
         ),
-        fixer.remove(initialValue),
+        // Remove up to end of arguments because there may be a trailing comma
+        fixer.removeRange([initialValue.range[0], node.range[1] - 1]),
       ];
       context.report({
         node,
