@@ -12,6 +12,7 @@ const void_arrow_body_1 = require("./rules/void-arrow-body");
 const void_side_effect_1 = require("./rules/void-side-effect");
 const prefer_flatmap_1 = require("./rules/prefer-flatmap");
 const react_no_stale_state_1 = require("./rules/react-no-stale-state");
+const react_no_dispatch_in_effect_1 = require("./rules/react-no-dispatch-in-effect");
 module.exports = {
     rules: {
         "prefer-promise-rejection": prefer_promise_rejection_1.default,
@@ -26,6 +27,7 @@ module.exports = {
         "void-side-effect": void_side_effect_1.default,
         "prefer-flatmap": prefer_flatmap_1.default,
         "react-no-stale-state": react_no_stale_state_1.default,
+        "react-no-dispatch-in-effect": react_no_dispatch_in_effect_1.default,
     },
     configs: {
         recommended: {
