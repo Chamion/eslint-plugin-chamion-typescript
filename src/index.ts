@@ -10,6 +10,7 @@ import voidArrowBody from "./rules/void-arrow-body";
 import voidSideEffect from "./rules/void-side-effect";
 import preferFlatmap from "./rules/prefer-flatmap";
 import reactNoStaleState from "./rules/react-no-stale-state";
+import reactNoInlineCallbackProp from "./rules/react-no-inline-callback-prop";
 
 module.exports = {
   rules: {
@@ -25,6 +26,7 @@ module.exports = {
     "void-side-effect": voidSideEffect,
     "prefer-flatmap": preferFlatmap,
     "react-no-stale-state": reactNoStaleState,
+    "react-no-inline-callback-prop": reactNoInlineCallbackProp,
   },
   configs: {
     recommended: {
