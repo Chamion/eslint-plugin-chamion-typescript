@@ -1,6 +1,6 @@
-# react-no-stale-state
+# react-no-unnecessary-rerender
 
-> Disallow calling state dispatch functions effect callbacks
+> Disallow calling state dispatch functions in effect callbacks
 
 A common antipattern in React code is setting state in response to state changes in a `useEffect` callback.
 It's better to resolve state in one rerender to avoid unnecessary rerender although doing so requires more effort.
