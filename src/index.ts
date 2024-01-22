@@ -10,6 +10,7 @@ import voidArrowBody from "./rules/void-arrow-body";
 import voidSideEffect from "./rules/void-side-effect";
 import preferFlatmap from "./rules/prefer-flatmap";
 import reactNoStaleState from "./rules/react-no-stale-state";
+import reactNoUnnecessaryRerender from "./rules/react-no-unnecessary-rerender";
 
 module.exports = {
   rules: {
@@ -25,6 +26,7 @@ module.exports = {
     "void-side-effect": voidSideEffect,
     "prefer-flatmap": preferFlatmap,
     "react-no-stale-state": reactNoStaleState,
+    "react-no-unnecessary-rerender": reactNoUnnecessaryRerender,
   },
   configs: {
     recommended: {
