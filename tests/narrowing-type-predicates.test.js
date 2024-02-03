@@ -24,6 +24,22 @@ const predicate = (value: 'A' | 'B'): value is 'A' => value === 'A'
   ? (value satisfies 'A', true)
   : (value satisfies Exclude<'A' | 'B', 'A'>, false);
     `,
+    `
+const predicate = (value: { a?: 'A'; b?: 'B' }): value is { a: 'A' } => 'a' in value && value.a === 'A'
+  ? (value satisfies { a: 'A' }, true)
+  : (
+      value satisfies Exclude<
+        {
+          a?: 'A';
+          b?: 'B';
+        },
+        {
+          a: 'A';
+        }
+      >,
+      false
+    );
+    `,
   ],
   invalid: [
     {
