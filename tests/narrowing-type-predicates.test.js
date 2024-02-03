@@ -142,5 +142,22 @@ const predicate = (value: { a?: 'A'; b?: 'B' }): value is { a: 'A' } => 'a' in v
         { messageId: "return" },
       ],
     },
+    {
+      code: `
+const predicate = (value: Generic<A, unknown>): value is Generic<A, B> => isB(value.payload)
+  ? (value satisfies Generic<A, any>, true)
+  : (value satisfies Exclude<Generic<A, B>, Generic<A, 'B'>>, false);
+      `,
+      output: `
+const predicate = (value: Generic<A, unknown>): value is Generic<A, B> => isB(value.payload)
+  ? (value satisfies Generic<A, B>, true)
+  : (value satisfies Exclude<Generic<A, unknown>, Generic<A, B>>, false);
+      `,
+      errors: [
+        { messageId: "return" },
+        { messageId: "param" },
+        { messageId: "return" },
+      ],
+    },
   ],
 });
