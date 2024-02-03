@@ -109,6 +109,28 @@ const parametersEqual = (
   }
 };
 
+const entityNamesEqual = (
+  head: TSESTree.EntityName,
+  ...rest: readonly TSESTree.EntityName[]
+): boolean => {
+  switch (head.type) {
+    case AST_NODE_TYPES.ThisExpression:
+      return rest.every((entityName) => entityName.type === head.type);
+    case AST_NODE_TYPES.Identifier:
+      return rest.every(
+        (entityName) =>
+          entityName.type === head.type && entityName.name === head.name
+      );
+    case AST_NODE_TYPES.TSQualifiedName:
+      return rest.every(
+        (entityName) =>
+          entityName.type === head.type &&
+          entityNamesEqual(entityName.left, head.left) &&
+          entityNamesEqual(entityName.right, head.right)
+      );
+  }
+};
+
 const nullableEquals =
   <T>(equals: (a: T, b: T) => boolean) =>
   (head: T | null | undefined, ...rest: readonly (T | null | undefined)[]) =>
@@ -201,9 +223,12 @@ const typesEqual = (a: TSESTree.TypeNode, b: TSESTree.TypeNode): boolean => {
     }
     case AST_NODE_TYPES.TSTypeReference: {
       const castB = b as any as typeof a;
-      return nullableEquals(arrayElementsEqual(typesEqual))(
-        a.typeParameters?.params,
-        castB.typeParameters?.params
+      return (
+        entityNamesEqual(a.typeName, castB.typeName) &&
+        nullableEquals(arrayElementsEqual(typesEqual))(
+          a.typeParameters?.params,
+          castB.typeParameters?.params
+        )
       );
     }
     case AST_NODE_TYPES.TSNamedTupleMember: {
@@ -326,6 +351,7 @@ export default createRule({
           case "block":
           case "catch":
           case "for":
+          case "switch":
             return true;
           default:
             return false;
