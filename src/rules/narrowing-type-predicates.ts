@@ -131,6 +131,86 @@ const entityNamesEqual = (
   }
 };
 
+const keysEqual = (
+  head: TSESTree.TSPropertySignature["key"],
+  ...rest: readonly TSESTree.TSPropertySignature["key"][]
+) => {
+  switch (head.type) {
+    case AST_NODE_TYPES.Identifier:
+      return rest.every(
+        (key) => key.type === head.type && key.name === head.name
+      );
+    case AST_NODE_TYPES.Literal:
+      return rest.every(
+        (key) => key.type === head.type && key.value === head.value
+      );
+    default:
+      // TODO: handle rest of cases
+      return true;
+  }
+};
+
+const membersEqual = (
+  head: TSESTree.TypeElement,
+  ...rest: readonly TSESTree.TypeElement[]
+) => {
+  switch (head.type) {
+    case AST_NODE_TYPES.TSPropertySignature:
+      return rest.every(
+        (member) =>
+          member.type === head.type &&
+          keysEqual(member.key, head.key) &&
+          member.optional === head.optional &&
+          member.readonly === head.readonly
+      );
+    case AST_NODE_TYPES.TSIndexSignature:
+      return rest.every(
+        (member) =>
+          member.type === head.type &&
+          member.readonly === head.readonly &&
+          nullableEquals(typesEqual)(
+            member.typeAnnotation?.typeAnnotation,
+            head.typeAnnotation?.typeAnnotation
+          )
+      );
+    case AST_NODE_TYPES.TSMethodSignature:
+      return rest.every(
+        (member) =>
+          member.type === head.type &&
+          keysEqual(member.key, head.key) &&
+          member.readonly === head.readonly &&
+          member.optional === head.optional &&
+          member.kind === head.kind &&
+          arrayElementsEqual(parametersEqual)(member.params, head.params) &&
+          nullableEquals(typesEqual)(
+            member.returnType?.typeAnnotation,
+            head.returnType?.typeAnnotation
+          ) &&
+          nullableEquals(arrayElementsEqual(typeParametersEqual))(
+            member.typeParameters?.params,
+            head.typeParameters?.params
+          )
+      );
+    case AST_NODE_TYPES.TSCallSignatureDeclaration:
+    case AST_NODE_TYPES.TSConstructSignatureDeclaration:
+      return rest.every(
+        (member) =>
+          member.type === head.type &&
+          arrayElementsEqual(parametersEqual)(member.params, head.params) &&
+          nullableEquals(typesEqual)(
+            member.returnType?.typeAnnotation,
+            head.returnType?.typeAnnotation
+          ) &&
+          nullableEquals(arrayElementsEqual(typeParametersEqual))(
+            member.typeParameters?.params,
+            head.typeParameters?.params
+          )
+      );
+    default:
+      return true;
+  }
+};
+
 const nullableEquals =
   <T>(equals: (a: T, b: T) => boolean) =>
   (head: T | null | undefined, ...rest: readonly (T | null | undefined)[]) =>
@@ -261,11 +341,19 @@ const typesEqual = (a: TSESTree.TypeNode, b: TSESTree.TypeNode): boolean => {
     }
     case AST_NODE_TYPES.TSLiteralType: {
       const castB = b as any as typeof a;
-      if (a.literal.type !== AST_NODE_TYPES.Literal) return true; // TODO: rest of the cases
+      if (a.literal.type !== AST_NODE_TYPES.Literal) return true; // Other cases shouldn't appear in types
       return (
         castB.literal.type === AST_NODE_TYPES.Literal &&
         a.literal.value === castB.literal.value
       );
+    }
+    case AST_NODE_TYPES.TSQualifiedName: {
+      const castB = b as any as typeof a;
+      return entityNamesEqual(a, castB);
+    }
+    case AST_NODE_TYPES.TSTypeLiteral: {
+      const castB = b as any as typeof a;
+      return arrayElementsEqual(membersEqual)(a.members, castB.members);
     }
     case AST_NODE_TYPES.TSAbstractKeyword:
     case AST_NODE_TYPES.TSAnyKeyword:
@@ -292,8 +380,6 @@ const typesEqual = (a: TSESTree.TypeNode, b: TSESTree.TypeNode): boolean => {
     case AST_NODE_TYPES.TSVoidKeyword:
       return true;
     case AST_NODE_TYPES.TSImportType:
-    case AST_NODE_TYPES.TSQualifiedName:
-    case AST_NODE_TYPES.TSTypeLiteral:
     case AST_NODE_TYPES.TSTypeQuery:
     default:
       // Default to not report a problem if comparison is not implemented
