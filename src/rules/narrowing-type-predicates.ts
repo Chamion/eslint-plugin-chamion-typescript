@@ -234,6 +234,14 @@ const typesEqual = (a: TSESTree.TypeNode, b: TSESTree.TypeNode): boolean => {
         )
       );
     }
+    case AST_NODE_TYPES.TSLiteralType: {
+      const castB = b as any as typeof a;
+      if (a.literal.type !== AST_NODE_TYPES.Literal) return true; // TODO: rest of the cases
+      return (
+        castB.literal.type === AST_NODE_TYPES.Literal &&
+        a.literal.value === castB.literal.value
+      );
+    }
     case AST_NODE_TYPES.TSAbstractKeyword:
     case AST_NODE_TYPES.TSAnyKeyword:
     case AST_NODE_TYPES.TSAsyncKeyword:
@@ -262,7 +270,6 @@ const typesEqual = (a: TSESTree.TypeNode, b: TSESTree.TypeNode): boolean => {
     case AST_NODE_TYPES.TSQualifiedName:
     case AST_NODE_TYPES.TSTypeLiteral:
     case AST_NODE_TYPES.TSTypeQuery:
-    case AST_NODE_TYPES.TSLiteralType:
     default:
       // Default to not report a problem if comparison is not implemented
       return true;
@@ -334,6 +341,12 @@ export default createRule({
 
     const getStatementsIn = (scope: Scope): TSESTree.Statement[] => {
       switch (scope.type) {
+        case "function":
+          if (scope.block.body == null) return [];
+          else if (Array.isArray(scope.block.body)) return scope.block.body;
+          else if (scope.block.body.type === AST_NODE_TYPES.BlockStatement)
+            return scope.block.body.body;
+          else return [];
         case "block":
           return scope.block.body;
         case "catch":

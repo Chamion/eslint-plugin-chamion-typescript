@@ -65,5 +65,20 @@ const predicate = (value: 'A' | 'B'): value is 'A' => value === 'A'
       `,
       errors: [{ messageId: "return" }],
     },
+    {
+      code: `
+const predicate = (value: number): value is 0 => {
+  return (value satisfies 1, true);
+  return (value satisfies Exclude<number, 1>, false);
+};
+      `,
+      output: `
+const predicate = (value: number): value is 0 => {
+  return (value satisfies 0, true);
+  return (value satisfies Exclude<number, 0>, false);
+};
+      `,
+      errors: [{ messageId: "return" }, { messageId: "return" }],
+    },
   ],
 });
