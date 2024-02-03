@@ -15,7 +15,7 @@
   },
   "main": "dist/index.js",
   "dependencies": {
-    "@typescript-eslint/experimental-utils": "^5.5.0",
+    "@typescript-eslint/experimental-utils": "^5.62.0",
     "tsutils": "^3.21.0"
   },
   "devDependencies": {
