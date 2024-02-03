@@ -80,5 +80,34 @@ const predicate = (value: number): value is 0 => {
       `,
       errors: [{ messageId: "return" }, { messageId: "return" }],
     },
+    {
+      code: `
+const predicate = (value: A): value is B => {
+  switch (value.type) {
+    case 'Identifier':
+    case 'ThisExpression':
+      return (value satisfies C, true);
+    default:
+      return (value satisfies Exclude<B, C>, false);
+  }
+};
+      `,
+      output: `
+const predicate = (value: A): value is B => {
+  switch (value.type) {
+    case 'Identifier':
+    case 'ThisExpression':
+      return (value satisfies B, true);
+    default:
+      return (value satisfies Exclude<A, B>, false);
+  }
+};
+      `,
+      errors: [
+        { messageId: "return" },
+        { messageId: "param" },
+        { messageId: "return" },
+      ],
+    },
   ],
 });
