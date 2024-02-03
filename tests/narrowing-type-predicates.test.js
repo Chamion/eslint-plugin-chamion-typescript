@@ -125,5 +125,22 @@ const predicate = (value: A): value is B => {
         { messageId: "return" },
       ],
     },
+    {
+      code: `
+const predicate = (value: { a?: 'A'; b?: 'B' }): value is { a: 'A' } => 'a' in value && value.a === 'A'
+  ? (value satisfies { a?: 'A' }, true)
+  : (value satisfies Exclude<{ a: 'A'; b?: 'B' }, { a?: 'A' }>, false);
+      `,
+      output: `
+const predicate = (value: { a?: 'A'; b?: 'B' }): value is { a: 'A' } => 'a' in value && value.a === 'A'
+  ? (value satisfies { a: 'A' }, true)
+  : (value satisfies Exclude<{ a?: 'A'; b?: 'B' }, { a: 'A' }>, false);
+      `,
+      errors: [
+        { messageId: "return" },
+        { messageId: "param" },
+        { messageId: "return" },
+      ],
+    },
   ],
 });
