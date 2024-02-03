@@ -19,6 +19,11 @@ ruleTester.run("narrowing-type-predicates", rule, {
     `
 const predicate = (value: 'A' | 'B'): value is 'A' => value === 'A';
     `,
+    `
+const predicate = (value: 'A' | 'B'): value is 'A' => value === 'A'
+  ? (value satisfies 'A', true)
+  : (value satisfies Exclude<'A' | 'B', 'A'>, false);
+    `,
   ],
   invalid: [],
 });
