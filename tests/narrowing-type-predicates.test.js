@@ -39,5 +39,31 @@ const predicate = (value: 'A' | 'B'): value is 'A' => value === 'A'
       `,
       errors: [{ messageId: "return" }],
     },
+    {
+      code: `
+const predicate = (value: 'A' | 'B'): value is 'A' => value === 'A'
+  ? (value satisfies 'A', true)
+  : (value satisfies Exclude<'B', 'A'>, false);
+      `,
+      output: `
+const predicate = (value: 'A' | 'B'): value is 'A' => value === 'A'
+  ? (value satisfies 'A', true)
+  : (value satisfies Exclude<'A' | 'B', 'A'>, false);
+      `,
+      errors: [{ messageId: "param" }],
+    },
+    {
+      code: `
+const predicate = (value: 'A' | 'B'): value is 'A' => value === 'A'
+  ? (value satisfies 'A', true)
+  : (value satisfies Exclude<'A' | 'B', 'A' & 'B'>, false);
+      `,
+      output: `
+const predicate = (value: 'A' | 'B'): value is 'A' => value === 'A'
+  ? (value satisfies 'A', true)
+  : (value satisfies Exclude<'A' | 'B', 'A'>, false);
+      `,
+      errors: [{ messageId: "return" }],
+    },
   ],
 });
