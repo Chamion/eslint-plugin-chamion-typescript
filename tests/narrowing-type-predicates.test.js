@@ -25,5 +25,19 @@ const predicate = (value: 'A' | 'B'): value is 'A' => value === 'A'
   : (value satisfies Exclude<'A' | 'B', 'A'>, false);
     `,
   ],
-  invalid: [],
+  invalid: [
+    {
+      code: `
+const predicate = (value: 'A' | 'B'): value is 'A' => value === 'A'
+  ? (value satisfies 'A' | 'B', true)
+  : (value satisfies Exclude<'A' | 'B', 'A'>, false);
+      `,
+      output: `
+const predicate = (value: 'A' | 'B'): value is 'A' => value === 'A'
+  ? (value satisfies 'A', true)
+  : (value satisfies Exclude<'A' | 'B', 'A'>, false);
+      `,
+      errors: [{ messageId: "return" }],
+    },
+  ],
 });
