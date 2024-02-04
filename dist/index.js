@@ -13,6 +13,7 @@ const void_side_effect_1 = require("./rules/void-side-effect");
 const prefer_flatmap_1 = require("./rules/prefer-flatmap");
 const react_no_stale_state_1 = require("./rules/react-no-stale-state");
 const react_no_unnecessary_rerender_1 = require("./rules/react-no-unnecessary-rerender");
+const narrowing_type_predicates_1 = require("./rules/narrowing-type-predicates");
 module.exports = {
     rules: {
         "prefer-promise-rejection": prefer_promise_rejection_1.default,
@@ -28,6 +29,7 @@ module.exports = {
         "prefer-flatmap": prefer_flatmap_1.default,
         "react-no-stale-state": react_no_stale_state_1.default,
         "react-no-unnecessary-rerender": react_no_unnecessary_rerender_1.default,
+        "narrowing-type-predicates": narrowing_type_predicates_1.default,
     },
     configs: {
         recommended: {

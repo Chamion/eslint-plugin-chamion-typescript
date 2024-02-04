@@ -11,6 +11,7 @@ import voidSideEffect from "./rules/void-side-effect";
 import preferFlatmap from "./rules/prefer-flatmap";
 import reactNoStaleState from "./rules/react-no-stale-state";
 import reactNoUnnecessaryRerender from "./rules/react-no-unnecessary-rerender";
+import narrowingTypePredicates from "./rules/narrowing-type-predicates";
 
 module.exports = {
   rules: {
@@ -27,6 +28,7 @@ module.exports = {
     "prefer-flatmap": preferFlatmap,
     "react-no-stale-state": reactNoStaleState,
     "react-no-unnecessary-rerender": reactNoUnnecessaryRerender,
+    "narrowing-type-predicates": narrowingTypePredicates,
   },
   configs: {
     recommended: {
