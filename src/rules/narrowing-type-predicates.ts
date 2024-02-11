@@ -54,6 +54,21 @@ const arrayElementsEqual =
         list.every((element, index) => equals(element, head[index]))
     );
 
+const unorderedEquals =
+  <T>(equals: (a: T, b: T) => boolean) =>
+  (a: readonly T[], b: readonly T[]) => {
+    if (a.length !== b.length) return false;
+    const bLeft = [...b];
+    return a.every((aElement) => {
+      const index = bLeft.findIndex((bElement) => equals(aElement, bElement));
+      if (index === -1) return false;
+      else {
+        bLeft.splice(index, 1);
+        return true;
+      }
+    });
+  };
+
 const templateElementsEqual = (
   a: TSESTree.TemplateElement,
   b: TSESTree.TemplateElement
@@ -353,7 +368,7 @@ const typesEqual = (a: TSESTree.TypeNode, b: TSESTree.TypeNode): boolean => {
     }
     case AST_NODE_TYPES.TSTypeLiteral: {
       const castB = b as any as typeof a;
-      return arrayElementsEqual(membersEqual)(a.members, castB.members);
+      return unorderedEquals(membersEqual)(a.members, castB.members);
     }
     case AST_NODE_TYPES.TSAbstractKeyword:
     case AST_NODE_TYPES.TSAnyKeyword:
