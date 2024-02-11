@@ -30,8 +30,8 @@ const predicate = (value: { a?: 'A'; b?: 'B' }): value is { a: 'A' } => 'a' in v
   : (
       value satisfies Exclude<
         {
-          a?: 'A';
           b?: 'B';
+          a?: 'A';
         },
         {
           a: 'A';
