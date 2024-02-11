@@ -40,6 +40,11 @@ const predicate = (value: { a?: 'A'; b?: 'B' }): value is { a: 'A' } => 'a' in v
       false
     );
     `,
+    `
+const predicate = (value: 'A' | 'B'): value is string & 'A' => value === 'A'
+  ? (value satisfies 'A' & string, true)
+  : (value satisfies Exclude<'B' | 'A', 'A' & string>, false);
+    `,
   ],
   invalid: [
     {
