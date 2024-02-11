@@ -283,7 +283,7 @@ const typesEqual = (a: TSESTree.TypeNode, b: TSESTree.TypeNode): boolean => {
     case AST_NODE_TYPES.TSUnionType:
     case AST_NODE_TYPES.TSIntersectionType: {
       const castB = b as any as typeof a;
-      return arrayElementsEqual(typesEqual)(a.types, castB.types);
+      return unorderedEquals(typesEqual)(a.types, castB.types);
     }
     case AST_NODE_TYPES.TSTupleType: {
       const castB = b as any as typeof a;
