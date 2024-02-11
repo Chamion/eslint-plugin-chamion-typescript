@@ -19,6 +19,20 @@ const isExcludeExpression = (typeAnnotation) => typeAnnotation.type === experime
     typeAnnotation.typeParameters.params.length === 2;
 const arrayElementsEqual = (equals) => (head, ...rest) => rest.every((list) => list.length === head.length &&
     list.every((element, index) => equals(element, head[index])));
+const unorderedEquals = (equals) => (a, b) => {
+    if (a.length !== b.length)
+        return false;
+    const bLeft = [...b];
+    return a.every((aElement) => {
+        const index = bLeft.findIndex((bElement) => equals(aElement, bElement));
+        if (index === -1)
+            return false;
+        else {
+            bLeft.splice(index, 1);
+            return true;
+        }
+    });
+};
 const templateElementsEqual = (a, b) => a.value.raw === b.value.raw && a.value.cooked === b.value.cooked;
 const parameterNamesEqual = (head, ...rest) => head.type === experimental_utils_1.AST_NODE_TYPES.TSThisType
     ? rest.every((parameterName) => parameterName.type === head.type)
@@ -154,7 +168,7 @@ const typesEqual = (a, b) => {
         case experimental_utils_1.AST_NODE_TYPES.TSUnionType:
         case experimental_utils_1.AST_NODE_TYPES.TSIntersectionType: {
             const castB = b;
-            return arrayElementsEqual(typesEqual)(a.types, castB.types);
+            return unorderedEquals(typesEqual)(a.types, castB.types);
         }
         case experimental_utils_1.AST_NODE_TYPES.TSTupleType: {
             const castB = b;
@@ -211,7 +225,7 @@ const typesEqual = (a, b) => {
         }
         case experimental_utils_1.AST_NODE_TYPES.TSTypeLiteral: {
             const castB = b;
-            return arrayElementsEqual(membersEqual)(a.members, castB.members);
+            return unorderedEquals(membersEqual)(a.members, castB.members);
         }
         case experimental_utils_1.AST_NODE_TYPES.TSAbstractKeyword:
         case experimental_utils_1.AST_NODE_TYPES.TSAnyKeyword:
