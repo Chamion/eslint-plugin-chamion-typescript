@@ -10,31 +10,53 @@ It's better to resolve state in one rerender to avoid unnecessary rerender altho
 ### Incorrect
 
 ```js
-const Component = () => {
-  const [state, setState] = useState();
+const DerivedFromProps = ({ config, value }) => {
+  const [state, setState] = useState(() => calculateState(config, value, 0));
   useEffect(() => {
-    if (state <= 0) {
-      setState(1);
-    }
-  }, [state]);
-  return null;
+    setState(calculateState(config, value, 0));
+  }, [config, value]);
+  // ...
+};
+
+const RespondingToEvent = () => {
+  const [data, setData] = useState(null);
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    setData(null);
+    let cancelled = false;
+    loadData(index).then((response) => {
+      if (!cancelled) setData(response.data);
+    });
+    return () => (cancelled = true);
+  }, [index]);
+  const handleIndexChange = (event) => setIndex(event.target.value);
+  // ...
 };
 ```
 
 ### Correct
 
 ```js
-const Component = () => {
-  const [state, setState] = useState();
-  useEffect(() => {
-    const callback = () => {
-      setTimeout(() => {
-        setState(1);
-      }, 1000);
-    };
-    callback();
-  }, [state]);
-  return null;
+const DerivedFromProps = ({ config, value }) => {
+  const [index, setIndex] = useState(0);
+  const state = calculateState(config, value, index);
+  // ...
+};
+
+const RespondingToEvent = () => {
+  const [data, setData] = useState(null);
+  const [index, setIndex] = useState(0);
+  const indexRef = useRef(index);
+  indexRef.current = index;
+  const handleIndexChange = (event) => {
+    const newIndex = event.target.value;
+    setIndex(newIndex);
+    setData(null);
+    loadData(newIndex).then((response) => {
+      if (indexRef.current === newIndex) setData(response.data);
+    });
+  };
+  // ...
 };
 ```
 
